@@ -1,0 +1,16 @@
+package components
+
+templ Login () {
+	<div class="flex flex-col justify-center items-center gap-4 h-screen">
+		<h1 class="text-3xl font-semibold">Login</h1>
+		<form action="/auth/login" method="post" class="bg-slate-300 shadow-md p-4 flex flex-col justify-center items-center gap-4 rounded-md">
+			<input name="username" type="text" value="" placeholder="username" class="border border-b p-2  outline-none"/>
+			<input name="password" type="password" value="" placeholder="password" class="border border-b p-2  outline-none"/>
+			<input name="address" type="text" value="" placeholder="address" class="border border-b p-2 outline-none"/>
+			<button
+				class="p-1 px-4 rounded-md font-semibold bg-green-500 hover:bg-green-300"
+				type="submit"
+			>Login</button>
+		</form>
+	</div>
+}

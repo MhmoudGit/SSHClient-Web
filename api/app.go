@@ -11,6 +11,7 @@ func App() {
 	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
+	e.Static("/static", "web/static")
 
 	routers.MainRoutes(e)
 

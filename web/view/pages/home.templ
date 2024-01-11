@@ -1,0 +1,18 @@
+package pages
+
+type LoginConfig struct {
+	User     string `form:"username"`
+	Password string `form:"password"`
+	Addr     string `form:"address"`
+}
+
+templ Home (data LoginConfig) {
+	<h1>Home</h1>
+	<p>
+		UserName:  { data.User }
+	</p>
+	<p>
+		Address:  { data.Addr }
+	</p>
+	<a href="/auth/logout">LogOut </a>
+}
