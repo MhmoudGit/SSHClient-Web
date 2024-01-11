@@ -13,7 +13,9 @@ func App() {
 	e.Use(middleware.Recover())
 	e.Static("/static", "web/static")
 
-	routers.MainRoutes(e)
+	routers.HomeRoutes(e)
+	routers.AuthRoutes(e)
+	routers.CmdRoutes(e)
 
 	e.Logger.Fatal(e.Start("localhost:3000"))
 }

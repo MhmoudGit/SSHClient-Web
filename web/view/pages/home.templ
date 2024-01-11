@@ -1,5 +1,7 @@
 package pages
 
+import "sshClient/web/view/components"
+
 type LoginConfig struct {
 	User     string `form:"username"`
 	Password string `form:"password"`
@@ -14,5 +16,6 @@ templ Home (data LoginConfig) {
 	<p>
 		Address:  { data.Addr }
 	</p>
+	@components.Cmd()
 	<a href="/auth/logout">LogOut </a>
 }
