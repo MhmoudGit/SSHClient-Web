@@ -1,0 +1,19 @@
+# Compiled binary
+*.exe
+*.out
+*.app
+
+# Dependency directories
+/vendor/
+/tmp/
+/web/static/
+
+# Output of go test
+/test-results/
+
+# IDE-specific files
+.idea/
+.vscode/
+
+# Environment-specific files
+.env

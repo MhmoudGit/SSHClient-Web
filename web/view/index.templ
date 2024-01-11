@@ -1,0 +1,28 @@
+package view
+
+templ Home () {
+	<h1>Home</h1>
+	<a href="/auth/logout">LogOut </a>
+}
+
+templ Base(contents templ.Component, auth string) {
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link href="/web/static/css/output.css" rel="stylesheet"/>
+			<script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
+			<link href="https://unpkg.com/css.gg@2.0.0/icons/css/home.css" rel="stylesheet"/>
+			<link href="https://unpkg.com/css.gg@2.0.0/icons/css/user-list.css" rel="stylesheet"/>
+			<title>Golang Templ</title>
+		</head>
+		<body class="bg-slate-100 font-mono">
+			if auth == "off" {
+				<h1>Please Login</h1>
+				<a href="/auth/login">LogIn </a>
+			} else {
+				@contents
+			}
+		</body>
+	</html>
+}
