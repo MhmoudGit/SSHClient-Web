@@ -10,17 +10,13 @@ import "context"
 import "io"
 import "bytes"
 
-type ServerInfo struct {
-	title  string
-	url    string
-	target string
-}
+import "sshClient/types"
 
-var infoData []ServerInfo = []ServerInfo{
-	{title: "Operating System", url: "/run/getOs", target: "os"},
-	{title: "Hostname", url: "/run/getHost", target: "host"},
-	{title: "IPv4 Public IP", url: "/run/getIp", target: "ip"},
-	{title: "Specs", url: "/run/getRam", target: "ram"},
+var infoData []types.ServerInfo = []types.ServerInfo{
+	{Title: "Operating System", Url: "/run/getOs", Target: "os"},
+	{Title: "Hostname", Url: "/run/getHost", Target: "host"},
+	{Title: "IPv4 Public IP", Url: "/run/getIp", Target: "ip"},
+	{Title: "Specs", Url: "/run/getSpecs", Target: "specs"},
 }
 
 func Info() templ.Component {
@@ -54,7 +50,7 @@ func Info() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(data.url))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(data.Url))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -62,7 +58,7 @@ func Info() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("#" + data.target))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString("#" + data.Target))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -71,9 +67,9 @@ func Info() templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(data.title)
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(data.Title)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web\view\components\info.templ`, Line: 30, Col: 18}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `web\view\components\info.templ`, Line: 26, Col: 18}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -83,7 +79,7 @@ func Info() templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(data.target))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(data.Target))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

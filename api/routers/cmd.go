@@ -2,6 +2,7 @@ package routers
 
 import (
 	"net/http"
+	"sshClient/types"
 	"sshClient/web/view/components"
 	"strings"
 
@@ -23,8 +24,7 @@ func extractDomains(input string) []string {
 
 func domainHandler(c echo.Context) error {
 	ConnectionError(c, conn)
-
-	value, err := RunCmd(conn, "grep -r -Eo 'server_name .*\\.com' /etc/nginx/ | awk '{print $2}'")
+	value, err := RunCmd(conn, types.DomainsCmd)
 	if err != nil {
 		return c.JSON(http.StatusOK, err.Error())
 	}
@@ -37,32 +37,32 @@ func cmdHandler(c echo.Context) error {
 	ConnectionError(c, conn)
 	switch cmd := c.Param("cmd"); cmd {
 	case "getOs":
-		value, err := RunCmd(conn, "lsb_release -a 2>/dev/null | grep 'Description' | awk -F ':\t' '{print $2}'")
+		value, err := RunCmd(conn, types.OsCmd)
 		if err != nil {
 			return c.JSON(http.StatusOK, err.Error())
 		}
 		component := components.GetValue(value)
 		return component.Render(c.Request().Context(), c.Response())
 	case "getHost":
-		value, err := RunCmd(conn, "hostname")
+		value, err := RunCmd(conn, types.HostCmd)
 		if err != nil {
 			return c.JSON(http.StatusOK, err.Error())
 		}
 		component := components.GetValue(value)
 		return component.Render(c.Request().Context(), c.Response())
 	case "getIp":
-		value, err := RunCmd(conn, "hostname -I | awk '{print $1}'")
+		value, err := RunCmd(conn, types.IpCmd)
 		if err != nil {
 			return c.JSON(http.StatusOK, err.Error())
 		}
 		component := components.GetValue(value)
 		return component.Render(c.Request().Context(), c.Response())
-	case "getRam":
-		value, err := RunCmd(conn, "sudo dmidecode -t 17 | grep Size")
+	case "getSpecs":
+		value, err := RunCmd(conn, types.RamCmd)
 		if err != nil {
 			return c.JSON(http.StatusOK, err.Error())
 		}
-		value2, err := RunCmd(conn, "nproc")
+		value2, err := RunCmd(conn, types.CpuCmd)
 		if err != nil {
 			return c.JSON(http.StatusOK, err.Error())
 		}
