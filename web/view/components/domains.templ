@@ -1,5 +1,7 @@
 package components
 
+import "strconv"
+
 templ Domains () {
 	<div class="flex flex-col justify-start items-start gap-2 max-w-[1200px] mt-10 rounded-md p-2">
 		<p class="text-2xl font-bold mb-4">
@@ -12,13 +14,66 @@ templ Domains () {
 			hx-target="#domains"
 			class="flex justify-start items-start flex-wrap bg-white border px-16 py-10 gap-4 w-full shadow-lg rounded-md min-w-[1200px]"
 		>
-			<div id="domains" class="gap-2"></div>
+			<table class="min-w-full bg-white border-collapse border-gray-300 rounded-t-lg overflow-hidden shadow-md">
+				<thead class="bg-slate-100 py-2 rounded-t-lg overflow-hidden">
+					<tr>
+						<th class="text-left py-2 px-4 border-b">Domain</th>
+						<th class="text-left py-2 px-4 border-b">Action</th>
+					</tr>
+				</thead>
+				<tbody id="domains"></tbody>
+			</table>
 		</div>
 	</div>
 }
 
 templ DomainsData(value []string) {
-	for _,d := range value {
-		<a href={ templ.URL("https://" + d) } target="_blank" class="font-semibold p-2 bg-rose-300 hover:bg-rose-200 rounded-md">{ d }</a>
+	<tbody>
+		for i,d := range value {
+			<tr>
+				<td class="py-2 px-4 border-b font-semibold p-2 bg-white hover:bg-slate-50 gap-8 flex items-center w-full">
+					<a href={ templ.URL("https://" + d) } target="_blank">{ d }</a>
+					<span id={ "id" + strconv.Itoa(i) }></span>
+				</td>
+				<td class="w-48">
+					<button
+						hx-Post="/run/ping"
+						hx-trigger="click"
+						hx-swap="innerHTML"
+						hx-indicator={ "#indicator" + strconv.Itoa(i) }
+						hx-target={ "#id" + strconv.Itoa(i) }
+						type="button"
+						name="url"
+						value={ d }
+						class="w-full font-semibold px-4 p-2 text-white bg-blue-500 hover:bg-blue-300 flex justify-start items-center gap-2"
+					>
+						<p>
+							Ping  
+						</p>
+						<span id={ "indicator" + strconv.Itoa(i) } class="htmx-indicator w-4 h-4 rounded-full border-2 border-t-black animate-spin"></span>
+					</button>
+				</td>
+			</tr>
+		}
+	</tbody>
+}
+
+templ PingResult(value string) {
+	if value[0] == '0' {
+		<span
+			hx-get="/close"
+			hx-trigger="load delay:2s"
+			hx-target="this"
+			hx-swap="outerHTML"
+			class="bg-green-500 text-white px-4 rounded ease-out"
+		>{ value }</span>
+	} else {
+		<span
+			class="bg-red-500 text-white px-4 rounded ease-out"
+		>{ value }</span>
 	}
+}
+
+templ Close() {
+	<span></span>
 }
