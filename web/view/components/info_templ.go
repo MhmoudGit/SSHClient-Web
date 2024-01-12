@@ -20,7 +20,7 @@ var infoData []ServerInfo = []ServerInfo{
 	{title: "Operating System", url: "/run/getOs", target: "os"},
 	{title: "Hostname", url: "/run/getHost", target: "host"},
 	{title: "IPv4 Public IP", url: "/run/getIp", target: "ip"},
-	{title: "Size", url: "/run/getRam", target: "ram"},
+	{title: "Specs", url: "/run/getRam", target: "ram"},
 }
 
 func Info() templ.Component {

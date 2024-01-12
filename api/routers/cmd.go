@@ -3,6 +3,7 @@ package routers
 import (
 	"net/http"
 	"sshClient/web/view/components"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/ssh"
@@ -10,7 +11,26 @@ import (
 
 func CmdRoutes(e *echo.Echo) {
 	run := e.Group("/run")
+	run.GET("/domains", domainHandler)
 	run.GET("/:cmd", cmdHandler)
+}
+
+func extractDomains(input string) []string {
+	// Split the input string based on spaces
+	domainList := strings.Fields(input)
+	return domainList
+}
+
+func domainHandler(c echo.Context) error {
+	ConnectionError(c, conn)
+
+	value, err := RunCmd(conn, "grep -r -Eo 'server_name .*\\.com' /etc/nginx/ | awk '{print $2}'")
+	if err != nil {
+		return c.JSON(http.StatusOK, err.Error())
+	}
+	domains := extractDomains(value)
+	component := components.DomainsData(domains)
+	return component.Render(c.Request().Context(), c.Response())
 }
 
 func cmdHandler(c echo.Context) error {

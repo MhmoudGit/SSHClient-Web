@@ -1,0 +1,24 @@
+package components
+
+templ Domains () {
+	<div class="flex flex-col justify-start items-start gap-2 max-w-[1200px] mt-10 rounded-md p-2">
+		<p class="text-2xl font-bold mb-4">
+			Domains
+		</p>
+		<div
+			hx-get="/run/domains"
+			hx-trigger="load"
+			hx-swap="outerHTML"
+			hx-target="#domains"
+			class="flex justify-start items-start flex-wrap bg-white border px-16 py-10 gap-4 w-full shadow-lg rounded-md min-w-[1200px]"
+		>
+			<div id="domains" class="gap-2"></div>
+		</div>
+	</div>
+}
+
+templ DomainsData(value []string) {
+	for _,d := range value {
+		<a href={ templ.URL("https://" + d) } target="_blank" class="font-semibold p-2 bg-rose-300 hover:bg-rose-200 rounded-md">{ d }</a>
+	}
+}
