@@ -2,14 +2,15 @@ package routers
 
 import (
 	"log"
-	"sshClient/web/view/pages"
+	"sshClient/types"
+	"sshClient/web/view/components"
 
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/ssh"
 )
 
-var login string = "on"
-var data pages.LoginConfig
+var login string = "off"
+var data types.LoginConfig
 var conn *ssh.Client
 
 func AuthRoutes(e *echo.Echo) {
@@ -32,6 +33,7 @@ func loginHandler(c echo.Context) error {
 
 func logoutHandler(c echo.Context) error {
 	login = "off"
+	ConnectionError(c, conn)
 	CloseConnection(conn)
 	return c.Redirect(302, "/")
 }
@@ -55,4 +57,12 @@ func Connect(user, password, addr string) *ssh.Client {
 
 func CloseConnection(connection *ssh.Client) {
 	connection.Close()
+}
+
+func ConnectionError(c echo.Context, connection *ssh.Client) error {
+	if connection == nil {
+		component := components.ErrorTempl("No Server Connection")
+		return component.Render(c.Request().Context(), c.Response())
+	}
+	return nil
 }

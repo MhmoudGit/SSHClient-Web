@@ -1,21 +1,10 @@
 package pages
 
+import "sshClient/types"
 import "sshClient/web/view/components"
 
-type LoginConfig struct {
-	User     string `form:"username"`
-	Password string `form:"password"`
-	Addr     string `form:"address"`
-}
-
-templ Home (data LoginConfig) {
-	<h1>Home</h1>
-	<p>
-		UserName:  { data.User }
-	</p>
-	<p>
-		Address:  { data.Addr }
-	</p>
-	@components.Cmd()
-	<a href="/auth/logout">LogOut </a>
+templ Home (data types.LoginConfig) {
+	@components.Header(data)
+	// @components.Cmd()
+	@components.Info()
 }

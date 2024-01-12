@@ -14,17 +14,40 @@ func CmdRoutes(e *echo.Echo) {
 }
 
 func cmdHandler(c echo.Context) error {
-	if conn == nil {
-		component := components.ErrorTempl("No Server Connection")
-		return component.Render(c.Request().Context(), c.Response())
-	}
+	ConnectionError(c, conn)
 	switch cmd := c.Param("cmd"); cmd {
 	case "getOs":
-		value, err := RunCmd(conn, "uname -s")
+		value, err := RunCmd(conn, "lsb_release -a 2>/dev/null | grep 'Description' | awk -F ':\t' '{print $2}'")
 		if err != nil {
 			return c.JSON(http.StatusOK, err.Error())
 		}
-		component := components.GetOperatingSystem(value)
+		component := components.GetValue(value)
+		return component.Render(c.Request().Context(), c.Response())
+	case "getHost":
+		value, err := RunCmd(conn, "hostname")
+		if err != nil {
+			return c.JSON(http.StatusOK, err.Error())
+		}
+		component := components.GetValue(value)
+		return component.Render(c.Request().Context(), c.Response())
+	case "getIp":
+		value, err := RunCmd(conn, "hostname -I | awk '{print $1}'")
+		if err != nil {
+			return c.JSON(http.StatusOK, err.Error())
+		}
+		component := components.GetValue(value)
+		return component.Render(c.Request().Context(), c.Response())
+	case "getRam":
+		value, err := RunCmd(conn, "sudo dmidecode -t 17 | grep Size")
+		if err != nil {
+			return c.JSON(http.StatusOK, err.Error())
+		}
+		value2, err := RunCmd(conn, "nproc")
+		if err != nil {
+			return c.JSON(http.StatusOK, err.Error())
+		}
+		value3 := value2 + "Cores," + value + "Memory"
+		component := components.GetValue(value3)
 		return component.Render(c.Request().Context(), c.Response())
 	}
 	return c.JSON(http.StatusOK, "No Data")

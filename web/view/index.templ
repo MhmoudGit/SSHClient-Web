@@ -13,7 +13,7 @@ templ Base(contents templ.Component, auth string) {
 			<link href="https://unpkg.com/css.gg@2.0.0/icons/css/user-list.css" rel="stylesheet"/>
 			<title>Golang Templ</title>
 		</head>
-		<body class="bg-slate-100 font-mono">
+		<body class="bg-slate-100 font-mono flex flex-col justify-center items-center">
 			if auth == "off" {
 				@components.Login()
 			} else {
