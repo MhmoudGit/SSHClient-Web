@@ -6,7 +6,7 @@
 # Dependency directories
 /vendor/
 /tmp/
-/web/static/imgs/
+/web/static/
 
 # Output of go test
 /test-results/
